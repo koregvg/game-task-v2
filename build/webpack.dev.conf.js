@@ -56,7 +56,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     // 读取HTML模板文件，并输出HTML文件，开发环境实际输出到内存中
     new HtmlWebpackPlugin({
       filename: 'index.html',
-      template: path.resolve(__dirname, '../index.html'),
+      template: path.resolve(__dirname, '../index.template.ejs'),
       inject: true,
       minify: {
         removeComments: true,        //去注释
