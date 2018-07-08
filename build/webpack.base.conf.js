@@ -2,11 +2,18 @@
 const path = require('path')
 const utils = require('./utils')
 const config = require('../config')
+const appConfig = require('./../app.config')
 const vueLoaderConfig = require('./vue-loader.conf')
 
+// 加载应用工程的webpack配置,例如entry、alias等
+const webpackAppConfig = appConfig.webpack
+
 function resolve (dir) {
-  return path.join(__dirname, '..', dir)
+  return path.resolve(process.cwd(), dir)
 }
+
+// 网站图标
+const favicon = path.join(process.cwd(), 'favicon.ico')
 
 const createLintingRule = () => ({
   test: /\.(js|vue)$/,
@@ -21,9 +28,7 @@ const createLintingRule = () => ({
 
 module.exports = {
   context: path.resolve(__dirname, '../'),
-  entry: {
-    app: './src/main.js'
-  },
+  entry: appConfig.webpack.entry,
   output: {
     path: config.build.assetsRoot,
     filename: '[name].js',
@@ -75,7 +80,7 @@ module.exports = {
           name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
         }
       }
-    ]
+    ].concat(webpackAppConfig.rules || []),
   },
   node: {
     // prevent webpack from injecting useless setImmediate polyfill because Vue

@@ -52,10 +52,17 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     new webpack.NamedModulesPlugin(), // HMR shows correct file names in console on update.
     new webpack.NoEmitOnErrorsPlugin(),
     // https://github.com/ampedandwired/html-webpack-plugin
+    // 由于mac不区分大小写，linux区分大小写，可能导致mac上正常，在部署时出错，所以强制区分大小写
+    // 读取HTML模板文件，并输出HTML文件，开发环境实际输出到内存中
     new HtmlWebpackPlugin({
       filename: 'index.html',
-      template: 'index.html',
-      inject: true
+      template: path.resolve(__dirname, '../index.html'),
+      inject: true,
+      minify: {
+        removeComments: true,        //去注释
+        collapseWhitespace: true,    //压缩空格
+        removeAttributeQuotes: true  //去除属性引用index.html
+      },
     }),
     // copy custom static assets
     new CopyWebpackPlugin([
@@ -93,3 +100,5 @@ module.exports = new Promise((resolve, reject) => {
     }
   })
 })
+
+module.exports = devWebpackConfig
